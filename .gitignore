@@ -1,14 +1,37 @@
-~$*.xlsx
-~$*.xls
+# Python cache & virtualenvs
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+
+# PyInstaller
+build/
+dist/
+*.manifest
+
+# Excel files & templates handling
+*.xlsx
+*.xls
 *.tmp
 
-# Uživatelská data a exporty
+# Local Databases (SQLite, etc.)
+*.db
+*.sqlite
+*.sqlite3
+
+# User data & exports
 /data/*
 !/data/*.template.*
 
-# Editor
+# Editors & IDEs
 .vscode/
+.idea/
 
-# Zálohy a log
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Backups & logs
 *.log
 *.bak
