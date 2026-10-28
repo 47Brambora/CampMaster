@@ -1,0 +1,136 @@
+{
+  "activities": [
+    {
+      "activity_id": "101",
+      "activity_type": "time",
+      "name": "Přespolní běh",
+      "scoring_rule": "descending_by_participants",
+      "start_interval_seconds": "60"
+    },
+    {
+      "activity_id": "102",
+      "activity_type": "points",
+      "name": "Střelba ze vzduchovky",
+      "scoring_rule": "fixed_max_30",
+      "start_interval_seconds": "0"
+    },
+    {
+      "activity_id": "103",
+      "activity_type": "points",
+      "name": "Hod na cíl",
+      "scoring_rule": "child_in_group_count_max_points",
+      "start_interval_seconds": "0"
+    }
+  ],
+  "children": [
+    {
+      "child_id": "1",
+      "first_name": "Petr",
+      "last_name": "Novák",
+      "date_of_birth": "2014-05-12",
+      "team": "black",
+      "age_group": "B",
+      "gender": "M"
+    },
+    {
+      "child_id": "2",
+      "first_name": "Ema",
+      "last_name": "Svobodová",
+      "date_of_birth": "2015-08-23",
+      "team": "blue",
+      "age_group": "A",
+      "gender": "F"
+    },
+    {
+      "child_id": "3",
+      "first_name": "Lukas",
+      "last_name": "Dvořák",
+      "date_of_birth": "2013-11-02",
+      "team": "black",
+      "age_group": "C",
+      "gender": "M"
+    }
+  ],
+  "scores": [
+    {
+      "score_id": "1011",
+      "child_id": "1",
+      "activity_id": "1",
+      "status": "OK",
+      "start_time_seconds": "0",
+      "finish_time_seconds": "255",
+      "points_scored": "2",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1012",
+      "child_id": "2",
+      "activity_id": "101",
+      "status": "OK",
+      "start_time_seconds": "60",
+      "finish_time_seconds": "330",
+      "points_scored": "1",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1013",
+      "child_id": "3",
+      "activity_id": "101",
+      "status": "DNS",
+      "start_time_seconds": "120",
+      "finish_time_seconds": "",
+      "points_scored": "0",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1021",
+      "child_id": "4",
+      "activity_id": "102",
+      "status": "OK",
+      "start_time_seconds": "",
+      "finish_time_seconds": "",
+      "points_scored": "28",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1022",
+      "child_id": "2",
+      "activity_id": "102",
+      "status": "OK",
+      "start_time_seconds": "",
+      "finish_time_seconds": "",
+      "points_scored": "22",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1023",
+      "child_id": "3",
+      "activity_id": "102",
+      "status": "DNS",
+      "start_time_seconds": "",
+      "finish_time_seconds": "",
+      "points_scored": "0",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1031",
+      "child_id": "1",
+      "activity_id": "103",
+      "status": "OK",
+      "start_time_seconds": "",
+      "finish_time_seconds": "",
+      "points_scored": "15",
+      "manual_points_override": "0"
+    },
+    {
+      "score_id": "1032",
+      "child_id": "2",
+      "activity_id": "103",
+      "status": "OK",
+      "start_time_seconds": "",
+      "finish_time_seconds": "",
+      "points_scored": "18",
+      "manual_points_override": "1"
+    }
+  ]
+}
