@@ -29,6 +29,8 @@ def kill_app(event=None):
     if reply:
         root.destroy()
 
+def create_new_database():
+    pass
 
 def get_available_camps():
     if not os.path.exists(DATA_DIR):
@@ -36,6 +38,20 @@ def get_available_camps():
         return []
 
     return [f for f in os.listdir(DATA_DIR) if f.endswith(".db")]
+
+# bottom navigation bar
+def bottom_navigation_bar():
+    btn_frame = Frame(root)
+    btn_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
+
+    close_btn = Button(btn_frame, text="Close app", command=kill_app)
+    create_btn = Button(btn_frame, text="Create new database", command=create_new_database)
+
+    close_btn.pack(side=RIGHT, padx=5)
+    create_btn.pack(side=RIGHT, padx=5)
+
+    close_btn.bind("<Return>", kill_app)
+    create_btn.bind("<Return>", create_new_database)
 
 
 def main():
@@ -46,9 +62,6 @@ def main():
     root.title("CampMaster")
     root.geometry("800x600")
 
-    close_btn = Button(root, text="Close app", command=kill_app)
-    close_btn.pack(pady=50)
-    close_btn.bind("<Return>", kill_app)
 
     root.mainloop()
 
