@@ -1,0 +1,21 @@
+[project]
+name = "campmaster"
+version = "0.1.0"
+description = "An official offline desktop application designed for managing points, disciplines, time measurements, and camp administration at children's summer camps, training camps, and sports events."
+readme = "README.md"
+authors = [
+    { name = "47Brambora", email = "47Brambora@gmail.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "openpyxl>=3.1.5",
+    "pyinstaller>=6.22.3",
+    "sqlalchemy>=2.1.6",
+]
+
+[project.scripts]
+campmaster = "main:main"
+
+[build-system]
+requires = ["uv_build>=0.13.6,<0.14.0"]
+build-backend = "uv_build"
