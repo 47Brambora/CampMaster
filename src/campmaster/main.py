@@ -1,3 +1,4 @@
+import os
 from tkinter import *
 from tkinter import messagebox
 
@@ -62,6 +63,7 @@ def main():
     root.title("CampMaster")
     root.geometry("800x600")
 
+    bottom_navigation_bar()
 
     root.mainloop()
 
