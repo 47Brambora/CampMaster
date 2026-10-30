@@ -1,6 +1,5 @@
-import os
 import datetime
-from pathlib import Path
+import os
 import sqlite3
 from tkinter import *
 from tkinter import messagebox, simpledialog
@@ -99,7 +98,6 @@ def create_new_database():
         message=f"Database '{reply}' was successfully created!"
     )
 
-
 # bottom navigation bar
 def bottom_navigation_bar():
     btn_frame = Frame(root)
@@ -113,6 +111,23 @@ def bottom_navigation_bar():
 
     close_btn.bind("<Return>", kill_app)
     create_btn.bind("<Return>", create_new_database)
+
+def update_progress():
+    global progress_step
+    max_length = 20
+
+    if progress_step <= max_length:
+        filled = "=" * progress_step
+        empty = "-" * (max_length - progress_step)
+        bar_text = f"||{filled}#>{empty}||"
+
+        if progress_label:
+            progress_label.config(text=bar_text)
+
+        progress_step += 1
+        root.after(500, update_progress)
+    else:
+        main_menu()
 
 # First page you will see.
 def loading_page():
@@ -139,21 +154,7 @@ def loading_page():
 
     splash_frame.bind("<Configure>", update_wrap)
 
-    global progress_step
-    max_length = 20
-
-    if progress_step <= max_length:
-        filled = "=" * progress_step
-        empty = "-" * (max_length - progress_step)
-        bar_text = f"||{filled}#>{empty}||"
-
-        if progress_label:
-            progress_label.config(text=bar_text)
-
-        progress_step += 1
-        root.after(500, update_progress)
-    else:
-        main_menu()
+    update_progress()
 
 def main_menu():
     splash_frame.destroy()
