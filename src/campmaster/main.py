@@ -114,23 +114,6 @@ def bottom_navigation_bar():
     close_btn.bind("<Return>", kill_app)
     create_btn.bind("<Return>", create_new_database)
 
-def update_progress():
-    global progress_step
-    max_length = 20
-
-    if progress_step <= max_length:
-        filled = "=" * progress_step
-        empty = "-" * (max_length - progress_step)
-        bar_text = f"||{filled}#>{empty}||"
-
-        if progress_label:
-            progress_label.config(text=bar_text)
-
-        progress_step += 1
-        root.after(500, update_progress)
-    else:
-        main_menu()
-
 # First page you will see.
 def loading_page():
     global splash_frame, progress_label
@@ -156,7 +139,21 @@ def loading_page():
 
     splash_frame.bind("<Configure>", update_wrap)
 
-    update_progress()
+    global progress_step
+    max_length = 20
+
+    if progress_step <= max_length:
+        filled = "=" * progress_step
+        empty = "-" * (max_length - progress_step)
+        bar_text = f"||{filled}#>{empty}||"
+
+        if progress_label:
+            progress_label.config(text=bar_text)
+
+        progress_step += 1
+        root.after(500, update_progress)
+    else:
+        main_menu()
 
 def main_menu():
     splash_frame.destroy()
