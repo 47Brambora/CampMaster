@@ -11,7 +11,7 @@ Hlavním výstupem je přehledná tabulka výsledků pro tisk z Excelu (`.xlsx`)
 
 - [x] Automatické zakládání adresáře `data/` a detekce existujících databází
 - [x] Dialogové okno pro vytvoření nové databáze tábora (`camp_YYYY.db`)
-- [ ] Implementace SQLite tabulek při zakládání databáze:
+- [x] Implementace SQLite tabulek při zakládání databáze:
   - `participants` (jméno a příjmení účastníků)
   - `games` (soutěže / disciplíny)
   - `scores` (bodování jednotlivců v hrách)

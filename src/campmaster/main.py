@@ -4,7 +4,6 @@ import sqlite3
 from tkinter import *
 from tkinter import messagebox, simpledialog
 
-
 ##############
 #   CONFIG   #
 ##############
@@ -91,7 +90,48 @@ def create_new_database():
         return
 
     with sqlite3.connect(db_path) as dat:
-        pass
+        # ! Change from activities to games
+        dat.cursor().execute("""
+            CREATE TABLE IF NOT EXISTS games (
+                game_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                game_type TEXT NOT NULL,
+                game_name TEXT NOT NULL,
+                scoring_rule TEXT NOT NULL,
+                start_interval_seconds INTEGER DEFAULT 0
+            )
+        """)
+        # Set up to get IDs from 100 and up
+        dat.cursor().execute("""
+            INSERT OR IGNORE INTO sqlite_sequence (name, seq)
+            VALUES ('games', 99)
+        """)
+        # ! Change from children to participants
+        dat.cursor().execute("""
+            CREATE TABLE IF NOT EXISTS participants (
+                participant_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                first_name TEXT NOT NULL,
+                last_name TEXT NOT NULL,
+                date_of_birth DATETIME NOT NULL,
+                team TEXT NOT NULL,
+                age_group TEXT NOT NULL,
+                gender TEXT NOT NULL
+            )
+        """)
+        dat.cursor().execute("""
+            CREATE TABLE IF NOT EXISTS scores (
+                score_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                participant_id INTEGER NOT NULL,
+                game_id INTEGER NOT NULL,
+                status TEXT NOT NULL,
+                start_time_seconds INTEGER NOT NULL,
+                finish_time_seconds INTEGER NOT NULL,
+                points_scored INTEGER NOT NULL,
+                manual_points_override INTEGER NOT NULL,
+                FOREIGN KEY(participant_id) REFERENCES participants(id) ON DELETE CASCADE,
+                FOREIGN KEY(game_id) REFERENCES games(game_id) ON DELETE CASCADE
+            )
+        """)
+        dat.commit()
 
     messagebox.showinfo(
         title="[Success] - New database",
