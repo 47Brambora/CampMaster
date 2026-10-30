@@ -29,6 +29,7 @@ logo = r"""
                                       | ##
                                        \##
 """
+description = "An official offline desktop application designed for managing points, disciplines, time measurements, and camp administration at children's summer camps, training camps, and sports events."
 
 
 ###############
@@ -67,6 +68,7 @@ def kill_app(event=None):
     if reply:
         root.destroy()
 
+# TODO: Creating new database by fixed standards. You can look in /data/camp_3026.json
 def create_new_database():
     reply = simpledialog.askstring("New database", "Enter database name: ", initialvalue=f"camp_{current_year()}.db")
 
@@ -139,10 +141,20 @@ def loading_page():
     splash_frame.pack(fill=BOTH, expand=True)
 
     logo_label = Label(splash_frame, text=logo, font=("TkFixedFont", 24), justify=LEFT)
+    description_label = Label(splash_frame, text=description, font=("TkFixedFont", 18), justify=CENTER)
+
     logo_label.pack(expand=True)
+    description_label.pack(pady=(0, 20), fill=X)
 
     progress_label = Label(splash_frame, text="||>-------------------||", font=("TkFixedFont", 24))
     progress_label.pack(pady=(80, 0))
+
+    def update_wrap(event):
+        new_width = event.width - 60
+        if new_width > 100:
+            description_label.config(wraplength=new_width)
+
+    splash_frame.bind("<Configure>", update_wrap)
 
     update_progress()
 
@@ -170,6 +182,7 @@ def main_menu():
 def main():
     global root
     print(logo)
+    print(description)
 
     root = Tk()
     root.geometry("800x600")
