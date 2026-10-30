@@ -21,6 +21,25 @@ The application is built entirely in **Python** and runs locally as a standalone
   - Export current results and standings into a styled Excel file complete with colors and custom formatting, perfect for printing, archiving, or sharing with camp leaders.
 - **100% Offline Standalone App:**
   - Runs locally as a standalone executable compiled via PyInstaller—no internet connection, Wi-Fi, or pre-installed Python required for end-users.
+  
+## Getting Started (Development & Source)
+
+During the current development phase, you can run the application directly from source using [uv](https://github.com/astral-sh/uv) for ultra-fast dependency management and execution:
+
+1. **Clone or download the repository:**
+
+```bash
+git clone git@github.com:47Brambora/CampMaster.git
+cd CampMaster
+```
+
+2. **Run the application directly using `uv`:**
+
+```bash
+uv run mastercamp
+```
+
+`uv` will automatically handle the virtual environment, sync required dependencies and launch the application.
 
 ## Architecture & Technology
 
