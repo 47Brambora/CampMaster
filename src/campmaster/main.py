@@ -47,47 +47,8 @@ def get_available_camps():
 
     return [f for f in os.listdir(DATA_DIR) if f.endswith(".db")]
 
-
-##########
-#   UI   #
-##########
-
-# Pop up asking if you want to close the app for SURE!!!
-# [I could add more "!", but why yes, or why not?? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
-# ; P
-def kill_app(event=None):
-    reply = messagebox.askyesno(
-        title="CampMaster - EXIT",
-        message="Are you sure you want to close app?\nDid you save all work?",
-        icon="question",
-        default=messagebox.NO
-    )
-
-    if reply:
-        root.destroy()
-
-def create_new_database():
-    reply = simpledialog.askstring("New database", "Enter database name: ", initialvalue=f"camp_{current_year()}.db")
-
-    if not reply or not reply.strip():
-        messagebox.showwarning(
-            title="[Warning] - New database",
-            message="Database creation cancelled or name is empty."
-        )
-        return
-
-    if not reply.endswith(".db"):
-        reply += ".db"
-
-    db_path = os.path.join(DATA_DIR, reply)
-
-    if os.path.exists(db_path):
-        messagebox.showerror(
-            title="[Error] - New database",
-            message=f"Database '{reply}' already exists!"
-        )
-        return
-
+# Initialize database schema
+def init_database(db_path:str):
     with sqlite3.connect(db_path) as dat:
         # ! Change from activities to games
         #* Legend for games: \
@@ -160,6 +121,49 @@ def create_new_database():
             )
         """)
         dat.commit()
+
+
+##########
+#   UI   #
+##########
+
+# Pop up asking if you want to close the app for SURE!!!
+# [I could add more "!", but why yes, or why not?? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
+# ; P
+def kill_app(event=None):
+    reply = messagebox.askyesno(
+        title="CampMaster - EXIT",
+        message="Are you sure you want to close app?\nDid you save all work?",
+        icon="question",
+        default=messagebox.NO
+    )
+
+    if reply:
+        root.destroy()
+
+def create_new_database():
+    reply = simpledialog.askstring("New database", "Enter database name: ", initialvalue=f"camp_{current_year()}.db")
+
+    if not reply or not reply.strip():
+        messagebox.showwarning(
+            title="[Warning] - New database",
+            message="Database creation cancelled or name is empty."
+        )
+        return
+
+    if not reply.endswith(".db"):
+        reply += ".db"
+
+    db_path = os.path.join(DATA_DIR, reply)
+
+    if os.path.exists(db_path):
+        messagebox.showerror(
+            title="[Error] - New database",
+            message=f"Database '{reply}' already exists!"
+        )
+        return
+
+    init_database(db_path)
 
     messagebox.showinfo(
         title="[Success] - New database",
