@@ -66,7 +66,6 @@ def kill_app(event=None):
     if reply:
         root.destroy()
 
-# TODO: Creating new database by fixed standards. You can look in /data/camp_3026.json
 def create_new_database():
     reply = simpledialog.askstring("New database", "Enter database name: ", initialvalue=f"camp_{current_year()}.db")
 
@@ -91,6 +90,18 @@ def create_new_database():
 
     with sqlite3.connect(db_path) as dat:
         # ! Change from activities to games
+        #* Legend for games: \
+            # game_id                   [INTEGER]               => Unique identifier starting from 100
+            # game_type                 [TEXT]                  => Type of that specific game/discipline:
+                # 'points'  => Evaluated purely by scored points (e.g., target shooting, quiz,...)
+                # 'time'    => Evaluated by measured time / stopwatch (e.g., running, obstacle course,...)
+            # game_name                 [TEXT]                  => name of the game
+            #scoring_rule               [TEXT]                  => Strategy for calculating points / standings:
+                # fixed_max_XX                      => Fixed maximum points limit (e.g., max 10 or 20 points regardless of participants)
+                # child_in_group_count_max_points   => Max points equal to the total count of children participating in the group/category
+                # descending_by_participants        => Points awarded descending by rank (1st place gets max participants points, last gets 1)
+                # ascending_by_participants         => Points awarded ascending by rank (inverse scoring or penalty-based ranking)
+            # start_interval_seconds    [INTEGER]   {default 0} => Time gap between individual starts in seconds (default 0 for simultaneous or non-time games)
         dat.cursor().execute("""
             CREATE TABLE IF NOT EXISTS games (
                 game_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -106,6 +117,14 @@ def create_new_database():
             VALUES ('games', 99)
         """)
         # ! Change from children to participants
+        #* Legend for participants \
+            # participant_id    [INTEGER]
+            # first_name        [TEXT]
+            # last_name         [TEXT]
+            # date_of_birth      [DATETIME]
+            # team              [TEXT]
+            # age_group         [TEXT] => Category classification (e.g., categories A through E)
+            # gender            [TEXT]
         dat.cursor().execute("""
             CREATE TABLE IF NOT EXISTS participants (
                 participant_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -117,6 +136,15 @@ def create_new_database():
                 gender TEXT NOT NULL
             )
         """)
+        #* Legend for scores \
+            # score_id                  [INTEGER]
+            # participant_id            [INTEGER]
+            # game_id                   [INTEGER]
+            # status                    [TEXT]      => Current state of participation (e.g., 'OK', 'DNS' - did not start, 'DNF' - did not finish, 'DQ' - disqualified)
+            # start_time_seconds        [INTEGER]
+            # finish_time_seconds       [INTEGER]
+            # points_scored             [INTEGER]
+            # manual_points_override    [INTEGER]
         dat.cursor().execute("""
             CREATE TABLE IF NOT EXISTS scores (
                 score_id INTEGER PRIMARY KEY AUTOINCREMENT,
