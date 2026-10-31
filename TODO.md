@@ -21,7 +21,10 @@ Hlavním výstupem je přehledná tabulka výsledků pro tisk z Excelu (`.xlsx`)
 - [x] Úvodní obrazovka (Splash screen) s animovaným ASCII loading barem
 - [x] Hlavní menu s dynamickým výpisem dostupných táborů
 - [x] Spodní navigační panel (klávesové zkratky / Enter navigace)
-- [ ] Obrazovka pro správu účastníků (přidání / výpis dětí)
+- [ ] Obrazovka pro správu účastníků (přidání / výpis dětí / úprava)
+  - [ ] Přidání dítěte a dat o něm  
+  - [ ] Úprava dat o určitém dítěti
+  - [ ] Vymazání určitého dítěte
 - [ ] Obrazovka pro správu her a zadávání bodů / výsledků
 
 ## Fáze 3: Export do Excelu (`openpyxl`)
