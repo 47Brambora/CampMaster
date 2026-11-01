@@ -235,9 +235,9 @@ def main_menu():
 
     camps = get_available_camps()
     if not camps:
-        info_text = "No camp database found in 'data/'. Please create one."
+        info_text = f"No camp database found in '{DATA_DIR}/'. Please create one."
     else:
-        info_text = f"Found databases: {', '.join(camps)}"
+        info_text = f"Found databases:\n {'\n'.join(camps)}"
 
     info_label = Label(root, text=info_text, font=("Arial", 32))
     info_label.pack(pady=100)
