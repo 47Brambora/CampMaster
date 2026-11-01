@@ -1,6 +1,7 @@
 import datetime
 import os
 import sqlite3
+from functools import partial
 from tkinter import *
 from tkinter import messagebox, simpledialog
 
@@ -11,6 +12,7 @@ from tkinter import messagebox, simpledialog
 DATA_DIR = "data"
 root = None
 splash_frame = None
+camp_list_Frame = None
 progress_label = None
 progress_step = 0
 logo = r"""
@@ -143,6 +145,36 @@ def kill_app(event=None):
     if reply:
         root.destroy()
 
+# Open a pop up for camp management and return the chosen action
+def open_action_dialog(parent, camp_name:str) -> str | None:
+    action = None
+
+    dialog = Toplevel(parent)
+    dialog.title(f"Manage Camp: {camp_name}")
+    dialog.geometry("320x160")
+    dialog.resizable(False, False)
+
+    dialog.transient(parent)
+    dialog.grab_set()
+
+    Label(dialog, text=f"Selected camp: {camp_name}\nWhat would you like to do?").pack(pady=15)
+
+    btn_frame = Frame(dialog)
+    btn_frame.pack(pady=10)
+
+    # Helper local fce to save action and close the dialog
+    def select_action(act:str):
+        nonlocal action
+        action = act
+        dialog.destroy()
+
+    Button(btn_frame, text="Open", width=8, command=partial(select_action, "open")).pack(side=LEFT, padx=5)
+    Button(btn_frame, text="Delete", width=8, fg="red", command=partial(select_action, "delete")).pack(side=LEFT, padx=5)
+    Button(btn_frame, text="Cancel", width=8, command=partial(select_action, "cancel")).pack(side=LEFT, padx=5)
+
+    parent.wait_window(dialog)
+    return action
+
 def create_new_database():
     reply = simpledialog.askstring("New database", "Enter database name: ", initialvalue=f"camp_{current_year()}.db")
 
@@ -171,6 +203,16 @@ def create_new_database():
         title="[Success] - New database",
         message=f"Database '{reply}' was successfully created!"
     )
+
+def pre_open_camp_database_pop_up_window(camp:str):
+    action = open_action_dialog(root, camp)
+
+    if action == "open":
+        print(f"Opening camp: {camp}")
+        # TODO: Add modify logic here
+    elif action == "delete" and messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete database '{camp}'?", icon="question", default=messagebox.NO):
+        print(f"Deleting database: {camp}")
+        # TODO: Add delete file logic here
 
 # bottom navigation bar
 def bottom_navigation_bar():
@@ -202,6 +244,25 @@ def update_progress():
         root.after(500, update_progress)
     else:
         main_menu()
+
+def camp_list_on_main_page(camp_list:list):
+    global camp_list_Frame
+
+    if camp_list_Frame is not None:
+        camp_list_Frame.destroy()
+
+    camp_list_Frame = Frame(root)
+    camp_list_Frame.pack(pady=10)
+
+    if not camp_list:
+        camp_list_text = Label(camp_list_Frame, text=f"No camp database found in '{DATA_DIR}'/. Please create one.")
+        create_btn = Button(camp_list_Frame, text="Create new database", command=create_new_database)
+        camp_list_text.pack(pady=5)
+        create_btn.pack(pady=5)
+    else:
+        for camp in camp_list:
+            camp_btn = Button(camp_list_Frame, text=camp, command=partial(pre_open_camp_database_pop_up_window, camp), width=25)
+            camp_btn.pack(padx=5, pady=2.5)
 
 # First page you will see.
 def loading_page():
@@ -236,13 +297,7 @@ def main_menu():
     root.title("CampMaster - Main Menu")
 
     camps = get_available_camps()
-    if not camps:
-        info_text = f"No camp database found in '{DATA_DIR}/'. Please create one."
-    else:
-        info_text = f"Found databases:\n {'\n'.join(camps)}"
-
-    info_label = Label(root, text=info_text, font=("Arial", 32))
-    info_label.pack(pady=100)
+    camp_list_on_main_page(camp_list=camps)
 
     bottom_navigation_bar()
 
