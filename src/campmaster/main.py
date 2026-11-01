@@ -3,7 +3,7 @@ import os
 import sqlite3
 from functools import partial
 from tkinter import *
-from tkinter import messagebox, simpledialog
+from tkinter import messagebox, simpledialog, ttk
 
 ##############
 #   CONFIG   #
@@ -207,12 +207,55 @@ def create_new_database():
 
     main_menu()
 
+def open_camp_workplace(camp:str):
+    db_path = os.path.join(DATA_DIR, camp)
+
+    # deleting whole main page
+    for widget in root.winfo_children():
+        widget.destroy()
+
+    root.title(f"CampMaster - Managing: {camp}")
+
+    dat = sqlite3.connect(db_path)
+    cursor = dat.cursor()
+
+    top_bar = Frame(root)
+    top_bar.pack(fill=X, padx=10, pady=10)
+
+    Label(top_bar, text=f"Active Camp: {camp}").pack(side=LEFT)
+    Button(top_bar, text="Back to Main Menu", command=main_menu).pack(side=RIGHT)
+
+    try:
+        notebook = ttk.Notebook(root)
+        notebook.pack(fill=BOTH, expand=TRUE, padx=10, pady=10)
+
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%';")
+        tables = [row[0] for row in cursor.fetchall()]
+    except sqlite3.Error as e:
+        messagebox.showerror("Database Error", f"Could not read database tables:\n{e}")
+        main_menu()
+        return
+
+    if not tables:
+        empty_frame = Frame(notebook)
+        notebook.add(empty_frame, text="Empty")
+        Label(empty_frame, text="No tables found.").pack(pady=20)
+        dat.close()
+        return
+
+    for table in tables:
+        tab_frame = Frame(notebook)
+        notebook.add(tab_frame, text=table.capitalize())
+        Label(tab_frame, text=f"Data management for: {table}").pack(pady=20)
+
+    dat.close()
+
 def pre_open_camp_database_pop_up_window(camp:str):
     action = open_action_dialog(root, camp)
 
     if action == "open":
-        print(f"Opening camp: {camp}")
-        # TODO: Add modify logic here
+        print(f"Opening camp workplace for: {camp}")
+        open_camp_workplace(camp)
     elif action == "delete" and messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete database '{camp}'?", icon="question", default=messagebox.NO):
         db_path = os.path.join(DATA_DIR, camp)
 
@@ -305,8 +348,9 @@ def loading_page():
     update_progress()
 
 def main_menu():
-    if splash_frame is not None:
-        splash_frame.destroy()
+    if root is not None:
+        for widget in root.winfo_children():
+            widget.destroy()
 
     root.title("CampMaster - Main Menu")
 
