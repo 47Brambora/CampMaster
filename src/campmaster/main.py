@@ -14,6 +14,7 @@ root = None
 splash_frame = None
 camp_list_Frame = None
 progress_label = None
+bottom_nav_frame = None
 progress_step = 0
 logo = r"""
       ______                                     __       __                        __
@@ -204,6 +205,8 @@ def create_new_database():
         message=f"Database '{reply}' was successfully created!"
     )
 
+    main_menu()
+
 def pre_open_camp_database_pop_up_window(camp:str):
     action = open_action_dialog(root, camp)
 
@@ -213,14 +216,20 @@ def pre_open_camp_database_pop_up_window(camp:str):
     elif action == "delete" and messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete database '{camp}'?", icon="question", default=messagebox.NO):
         print(f"Deleting database: {camp}")
         # TODO: Add delete file logic here
+        main_menu()
 
 # bottom navigation bar
 def bottom_navigation_bar():
-    btn_frame = Frame(root)
-    btn_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
+    global bottom_nav_frame
 
-    close_btn = Button(btn_frame, text="Close app", command=kill_app)
-    create_btn = Button(btn_frame, text="Create new database", command=create_new_database)
+    if bottom_nav_frame is not None:
+        bottom_nav_frame.destroy()
+
+    bottom_nav_frame = Frame(root)
+    bottom_nav_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
+
+    close_btn = Button(bottom_nav_frame, text="Close app", command=kill_app)
+    create_btn = Button(bottom_nav_frame, text="Create new database", command=create_new_database)
 
     close_btn.pack(side=RIGHT, padx=5)
     create_btn.pack(side=RIGHT, padx=5)
@@ -292,7 +301,8 @@ def loading_page():
     update_progress()
 
 def main_menu():
-    splash_frame.destroy()
+    if splash_frame is not None:
+        splash_frame.destroy()
 
     root.title("CampMaster - Main Menu")
 
