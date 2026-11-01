@@ -214,8 +214,12 @@ def pre_open_camp_database_pop_up_window(camp:str):
         print(f"Opening camp: {camp}")
         # TODO: Add modify logic here
     elif action == "delete" and messagebox.askyesno("Confirm Deletion", f"Are you sure you want to delete database '{camp}'?", icon="question", default=messagebox.NO):
-        print(f"Deleting database: {camp}")
-        # TODO: Add delete file logic here
+        db_path = os.path.join(DATA_DIR, camp)
+
+        if os.path.exists(db_path):
+            os.remove(db_path)
+            print(f"Deleting database: {camp}")
+
         main_menu()
 
 # bottom navigation bar
