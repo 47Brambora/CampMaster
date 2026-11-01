@@ -34,16 +34,18 @@ description = "An official offline desktop application designed for managing poi
 #   LOGICAL   #
 ###############
 
-# Get current year
-def current_year():
-    today = datetime.date.today()
-    year = today.year
-    return year
-
-def get_available_camps():
+# Ensure the data directory exists, create it if missing
+def check_for_DATA_DIR() -> None:
     if not os.path.exists(DATA_DIR):
         os.makedirs(DATA_DIR)
-        return []
+
+# Get current year
+def current_year():
+    return datetime.date.today().year
+
+# Scan the data directory for existing camp database files (.db)
+def get_available_camps() -> list[str]:
+    check_for_DATA_DIR()
 
     return [f for f in os.listdir(DATA_DIR) if f.endswith(".db")]
 
