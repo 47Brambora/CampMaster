@@ -26,6 +26,8 @@ dist/
 
 # Editors & IDEs
 .vscode/
+!.vscode/extensions.json
+!.vscode/settings.json
 .idea/
 
 # OS generated files

@@ -1,0 +1,7 @@
+{
+  "python.defaultInterpreterPath": ".venv/bin/activation",
+  "editor.formatOnSave": true,
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff"
+  },
+}
