@@ -39,9 +39,9 @@ description = "An official offline desktop application designed for managing poi
 
 
 # Ensure the data directory exists, create it if missing
-def check_for_DATA_DIR() -> None:
-    if not os.path.exists(DATA_DIR):
-        os.makedirs(DATA_DIR)
+def check_for_DATA_DIR(data_dir_path: str = DATA_DIR) -> None:
+    if not os.path.exists(data_dir_path):
+        os.makedirs(data_dir_path)
 
 
 # Get current year
@@ -50,10 +50,10 @@ def current_year():
 
 
 # Scan the data directory for existing camp database files (.db)
-def get_available_camps() -> list[str]:
-    check_for_DATA_DIR()
+def get_available_camps(data_dir_path: str = DATA_DIR) -> list[str]:
+    check_for_DATA_DIR(data_dir_path=data_dir_path)
 
-    return [f for f in os.listdir(DATA_DIR) if f.endswith(".db")]
+    return [f for f in os.listdir(data_dir_path) if f.endswith(".db")]
 
 
 # Initialize database schema
@@ -215,7 +215,7 @@ def open_action_dialog(parent, camp_name: str) -> str | None:
     return action
 
 
-def create_new_database():
+def create_new_database(data_dir_path: str = DATA_DIR):
     reply = simpledialog.askstring(
         "New database",
         "Enter database name: ",
@@ -232,7 +232,7 @@ def create_new_database():
     if not reply.endswith(".db"):
         reply += ".db"
 
-    db_path = os.path.join(DATA_DIR, reply)
+    db_path = os.path.join(data_dir_path, reply)
 
     if os.path.exists(db_path):
         mesbox_showerror(msg=f"Database '{reply}' already exists!")
@@ -296,7 +296,7 @@ def open_camp_workplace(camp: str):
     dat.close()
 
 
-def pre_open_camp_database_pop_up_window(camp: str):
+def pre_open_camp_database_pop_up_window(camp: str, data_dir_path: str = DATA_DIR):
     action = open_action_dialog(root, camp)
 
     if action == "open":
@@ -306,7 +306,7 @@ def pre_open_camp_database_pop_up_window(camp: str):
         tit="Confirm Deletion",
         msg=f"Are you sure you want to delete database '{camp}'?",
     ):
-        db_path = os.path.join(DATA_DIR, camp)
+        db_path = os.path.join(data_dir_path, camp)
 
         if os.path.exists(db_path):
             os.remove(db_path)
@@ -355,7 +355,7 @@ def update_progress():
         main_menu()
 
 
-def camp_list_on_main_page(camp_list: list):
+def camp_list_on_main_page(camp_list: list, data_dir_path: str = DATA_DIR):
     global camp_list_Frame
 
     if camp_list_Frame is not None:
@@ -367,7 +367,7 @@ def camp_list_on_main_page(camp_list: list):
     if not camp_list:
         camp_list_text = Label(
             camp_list_Frame,
-            text=f"No camp database found in '{DATA_DIR}'/. Please create one.",
+            text=f"No camp database found in '{data_dir_path}'/. Please create one.",
         )
         create_btn = Button(
             camp_list_Frame, text="Create new database", command=create_new_database
