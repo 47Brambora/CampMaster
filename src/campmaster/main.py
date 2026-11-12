@@ -137,6 +137,27 @@ def init_database(db_path: str):
 ##########
 
 
+def mesbox_askyesno(tit: str, msg: str, ico: str = "question", defa: bool = False):
+    if defa:
+        defa = messagebox.YES
+    else:
+        defa = messagebox.NO
+
+    return messagebox.askyesno(title=tit, message=msg, icon=ico, default=defa)
+
+
+def mesbox_showwarning(msg: str, tit: str = "[Warning]"):
+    return messagebox.showwarning(title=tit, message=mes)
+
+
+def mesbox_showerror(msg: str, tit: str = "[Error]"):
+    return messagebox.showerror(title=tit, message=msg)
+
+
+def mesbox_showinfo(msg: str, tit: str = "[INFO]"):
+    return messagebox.showinfo(title=tit, message=msg)
+
+
 # Pop up asking if you want to close the app for SURE!!!
 # [I could add more "!", but why yes, or why not?? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
 # ; P
