@@ -162,11 +162,10 @@ def mesbox_showinfo(msg: str, tit: str = "[INFO]"):
 # [I could add more "!", but why yes, or why not?? !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
 # ; P
 def kill_app(event=None):
-    reply = messagebox.askyesno(
-        title="CampMaster - EXIT",
-        message="Are you sure you want to close app?\nDid you save all work?",
-        icon="question",
-        default=messagebox.NO,
+    reply = mesbox_askyesno(
+        tit="CampMaster - EXIT",
+        msg="Are you sure you want to close app?\nDid you save all work?",
+        ico="question",
     )
 
     if reply:
@@ -224,9 +223,9 @@ def create_new_database():
     )
 
     if not reply or not reply.strip():
-        messagebox.showwarning(
-            title="[Warning] - New database",
-            message="Database creation cancelled or name is empty.",
+        mesbox_showwarning(
+            msg="Database creation cancelled or name is empty.",
+            tit="[Warning] - New database",
         )
         return
 
@@ -236,17 +235,14 @@ def create_new_database():
     db_path = os.path.join(DATA_DIR, reply)
 
     if os.path.exists(db_path):
-        messagebox.showerror(
-            title="[Error] - New database",
-            message=f"Database '{reply}' already exists!",
-        )
+        mesbox_showerror(msg=f"Database '{reply}' already exists!")
         return
 
     init_database(db_path)
 
-    messagebox.showinfo(
-        title="[Success] - New database",
-        message=f"Database '{reply}' was successfully created!",
+    mesbox_showinfo(
+        msg=f"Database '{reply}' was successfully created!",
+        tit="[Success] - New database",
     )
 
     main_menu()
@@ -279,7 +275,9 @@ def open_camp_workplace(camp: str):
         )
         tables = [row[0] for row in cursor.fetchall()]
     except sqlite3.Error as e:
-        messagebox.showerror("Database Error", f"Could not read database tables:\n{e}")
+        mesbox_showerror(
+            msg=f"Could not read database tables:\n{e}", tit="Database Error"
+        )
         main_menu()
         return
 
@@ -304,11 +302,9 @@ def pre_open_camp_database_pop_up_window(camp: str):
     if action == "open":
         print(f"Opening camp workplace for: {camp}")
         open_camp_workplace(camp)
-    elif action == "delete" and messagebox.askyesno(
-        "Confirm Deletion",
-        f"Are you sure you want to delete database '{camp}'?",
-        icon="question",
-        default=messagebox.NO,
+    elif action == "delete" and mesbox_askyesno(
+        tit="Confirm Deletion",
+        msg=f"Are you sure you want to delete database '{camp}'?",
     ):
         db_path = os.path.join(DATA_DIR, camp)
 
