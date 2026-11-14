@@ -45,5 +45,5 @@ uv run campmaster
 
 - **Core & Logic:** Pure Python
 - **Database:** Local structured database (SQLite) for application data and records
-- **Reporting / Export:** Excel generation with custom styling and colors (`openpyxl` / pandas)
+- **Reporting / Export:** Excel generation with custom styling and colors (`openpyxl`; pandas is planned for later statistics)
 - **Distribution:** Standalone `.exe` package via PyInstaller (zero-dependency local execution)
