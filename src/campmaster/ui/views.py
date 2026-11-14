@@ -243,6 +243,8 @@ def open_camp_workplace(root, camp: str):
 
     # -- TABLE  --
 
+    dat = None
+
     try:
         dat = sqlite3.connect(db_path)
         cursor = dat.cursor()
@@ -259,12 +261,14 @@ def open_camp_workplace(root, camp: str):
         )
         main_menu(root)
         return
+    finally:
+        if dat is not None:
+            dat.close()
 
     if not tables:
         empty_frame = Frame(notebook)
         notebook.add(empty_frame, text="Empty")
         Label(empty_frame, text="No tables found.").pack(pady=20)
-        dat.close()
         return
 
     for table in tables:

@@ -56,20 +56,20 @@ def init_database(db_path: str):
         # - participant_id            [INTEGER]
         # - game_id                   [INTEGER]
         # - status                    [TEXT]      => Current state of participation (e.g., 'OK', 'DNS' - did not start, 'DNF' - did not finish, 'DQ' - disqualified)
-        # - start_time_seconds        [INTEGER]
-        # - finish_time_seconds       [INTEGER]
-        # - points_scored             [INTEGER]
-        # - manual_points_override    [INTEGER]
+        # - start_time_seconds        [INTEGER]   => NULL for point-based games or when not started
+        # - finish_time_seconds       [INTEGER]   => NULL for point-based games or when not finished
+        # - points_scored             [INTEGER]   {default 0}
+        # - manual_points_override    [INTEGER]   => NULL = no override (0 is a valid override)
         dat.cursor().execute("""
             CREATE TABLE IF NOT EXISTS scores (
                 score_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 participant_id INTEGER NOT NULL,
                 game_id INTEGER NOT NULL,
-                status TEXT NOT NULL,
-                start_time_seconds INTEGER NOT NULL,
-                finish_time_seconds INTEGER NOT NULL,
-                points_scored INTEGER NOT NULL,
-                manual_points_override INTEGER NOT NULL,
+                status TEXT NOT NULL DEFAULT 'OK',
+                start_time_seconds INTEGER,
+                finish_time_seconds INTEGER,
+                points_scored INTEGER NOT NULL DEFAULT 0,
+                manual_points_override INTEGER,
                 FOREIGN KEY(participant_id) REFERENCES participants(participant_id) ON DELETE CASCADE,
                 FOREIGN KEY(game_id) REFERENCES games(game_id) ON DELETE CASCADE
             )
