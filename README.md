@@ -36,7 +36,7 @@ cd CampMaster
 2. **Run the application directly using `uv`:**
 
 ```bash
-uv run mastercamp
+uv run campmaster
 ```
 
 `uv` will automatically handle the virtual environment, sync required dependencies and launch the application.

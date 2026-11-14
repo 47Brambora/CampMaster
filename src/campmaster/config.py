@@ -17,6 +17,6 @@ LOGO = r"""
 
 DESCRIPTION = "An official offline desktop application designed for managing points, disciplines, time measurements, and camp administration at children's summer camps, training camps, and sports events."
 
-VERSION = "v0.2.0"
+VERSION = "v0.1.0"
 
 DATA_DIR = "data"

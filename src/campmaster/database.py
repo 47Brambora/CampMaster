@@ -70,7 +70,7 @@ def init_database(db_path: str):
                 finish_time_seconds INTEGER NOT NULL,
                 points_scored INTEGER NOT NULL,
                 manual_points_override INTEGER NOT NULL,
-                FOREIGN KEY(participant_id) REFERENCES participants(id) ON DELETE CASCADE,
+                FOREIGN KEY(participant_id) REFERENCES participants(participant_id) ON DELETE CASCADE,
                 FOREIGN KEY(game_id) REFERENCES games(game_id) ON DELETE CASCADE
             )
         """)
