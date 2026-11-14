@@ -12,7 +12,7 @@ def check_for_DATA_DIR(data_dir_path: str = DATA_DIR) -> None:
 
 # Get current year
 def current_year():
-    return datetime.date.today().year
+    return datetime.datetime.now().astimezone().year
 
 
 # Scan the data directory for existing camp database files (.db)
