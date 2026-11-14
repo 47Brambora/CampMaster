@@ -235,6 +235,23 @@ def create_new_database(data_dir_path: str = DATA_DIR):
     main_menu()
 
 
+def add_record(camp: str):
+    print(f"Adding record to {camp}")
+
+
+def remove_record(camp: str):
+    print(f"Removing record from {camp}")
+
+
+def modify_record(camp: str):
+    print(f"Modifying record in {camp}")
+
+
+def refresh_workplace(camp: str):
+    print(f"Refreshing workplace for {camp}")
+    open_camp_workplace(camp=camp)
+
+
 def open_camp_workplace(camp: str):
     db_path = os.path.join(DATA_DIR, camp)
 
@@ -247,11 +264,37 @@ def open_camp_workplace(camp: str):
     dat = sqlite3.connect(db_path)
     cursor = dat.cursor()
 
+    # -- TOP BAR --
+
     top_bar = Frame(root)
     top_bar.pack(fill=X, padx=10, pady=10)
 
-    Label(top_bar, text=f"Active Camp: {camp}").pack(side=LEFT)
-    Button(top_bar, text="Back to Main Menu", command=main_menu).pack(side=RIGHT)
+    Label(top_bar, text=f"Active Camp: {camp}", font=("Arial", 11, "bold")).pack(
+        side=LEFT
+    )
+
+    # -- BOTTOM BAR --
+
+    bottom_bar = Frame(root)
+    bottom_bar.pack(side=BOTTOM, fill=X, padx=20, pady=10)
+
+    Button(bottom_bar, text="Back to Main Menu", command=main_menu).pack(
+        side=RIGHT, padx=5
+    )
+    Button(
+        bottom_bar, text="Refresh", command=partial(refresh_workplace, camp), width=8
+    ).pack(side=LEFT, padx=5)
+    Button(
+        bottom_bar, text="Modify", command=partial(modify_record, camp), width=8
+    ).pack(side=LEFT, padx=5)
+    Button(
+        bottom_bar, text="Remove", command=partial(remove_record, camp), width=8
+    ).pack(side=LEFT, padx=5)
+    Button(bottom_bar, text="Add", command=partial(add_record, camp), width=8).pack(
+        side=LEFT, padx=5
+    )
+
+    # -- TABLE  --
 
     try:
         notebook = ttk.Notebook(root)
