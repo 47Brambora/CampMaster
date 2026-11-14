@@ -331,7 +331,7 @@ def bottom_navigation_bar():
     bottom_nav_frame = Frame(root)
     bottom_nav_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
 
-    close_btn = Button(bottom_nav_frame, text="Close app", command=kill_app)
+    close_btn = Button(bottom_nav_frame, text="Close app", command=kill_app, bg="red")
     create_btn = Button(
         bottom_nav_frame, text="Create new database", command=create_new_database
     )
