@@ -253,6 +253,37 @@ def refresh_workplace(camp: str):
 
 
 def open_camp_workplace(camp: str):
+    def top_bar():
+        top_bar = Frame(root)
+        top_bar.pack(fill=X, padx=10, pady=10)
+
+        Label(top_bar, text=f"Active Camp: {camp}", font=("Arial", 11, "bold")).pack(
+            side=LEFT
+        )
+
+    def bottom_bar():
+        bottom_bar = Frame(root)
+        bottom_bar.pack(side=BOTTOM, fill=X, padx=20, pady=10)
+
+        Button(bottom_bar, text="Back to Main Menu", command=main_menu).pack(
+            side=RIGHT, padx=5
+        )
+        Button(
+            bottom_bar,
+            text="Refresh",
+            command=partial(refresh_workplace, camp),
+            width=8,
+        ).pack(side=LEFT, padx=5)
+        Button(
+            bottom_bar, text="Modify", command=partial(modify_record, camp), width=8
+        ).pack(side=LEFT, padx=5)
+        Button(
+            bottom_bar, text="Remove", command=partial(remove_record, camp), width=8
+        ).pack(side=LEFT, padx=5)
+        Button(bottom_bar, text="Add", command=partial(add_record, camp), width=8).pack(
+            side=LEFT, padx=5
+        )
+
     db_path = os.path.join(DATA_DIR, camp)
 
     # deleting whole main page
@@ -265,34 +296,10 @@ def open_camp_workplace(camp: str):
     cursor = dat.cursor()
 
     # -- TOP BAR --
-
-    top_bar = Frame(root)
-    top_bar.pack(fill=X, padx=10, pady=10)
-
-    Label(top_bar, text=f"Active Camp: {camp}", font=("Arial", 11, "bold")).pack(
-        side=LEFT
-    )
+    top_bar()
 
     # -- BOTTOM BAR --
-
-    bottom_bar = Frame(root)
-    bottom_bar.pack(side=BOTTOM, fill=X, padx=20, pady=10)
-
-    Button(bottom_bar, text="Back to Main Menu", command=main_menu).pack(
-        side=RIGHT, padx=5
-    )
-    Button(
-        bottom_bar, text="Refresh", command=partial(refresh_workplace, camp), width=8
-    ).pack(side=LEFT, padx=5)
-    Button(
-        bottom_bar, text="Modify", command=partial(modify_record, camp), width=8
-    ).pack(side=LEFT, padx=5)
-    Button(
-        bottom_bar, text="Remove", command=partial(remove_record, camp), width=8
-    ).pack(side=LEFT, padx=5)
-    Button(bottom_bar, text="Add", command=partial(add_record, camp), width=8).pack(
-        side=LEFT, padx=5
-    )
+    bottom_bar()
 
     # -- TABLE  --
 
@@ -343,28 +350,6 @@ def pre_open_camp_database_pop_up_window(camp: str, data_dir_path: str = DATA_DI
             print(f"Deleting database: {camp}")
 
         main_menu()
-
-
-# bottom navigation bar
-def bottom_navigation_bar():
-    global bottom_nav_frame
-
-    if bottom_nav_frame is not None:
-        bottom_nav_frame.destroy()
-
-    bottom_nav_frame = Frame(root)
-    bottom_nav_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
-
-    close_btn = Button(bottom_nav_frame, text="Close app", command=kill_app, bg="red")
-    create_btn = Button(
-        bottom_nav_frame, text="Create new database", command=create_new_database
-    )
-
-    close_btn.pack(side=RIGHT, padx=5)
-    create_btn.pack(side=RIGHT, padx=5)
-
-    close_btn.bind("<Return>", kill_app)
-    create_btn.bind("<Return>", create_new_database)
 
 
 def update_progress():
@@ -448,16 +433,37 @@ def loading_page():
 
 
 def main_menu():
-    if root is not None:
-        for widget in root.winfo_children():
-            widget.destroy()
+    def bottom_bar():
+        global bottom_nav_frame
+
+        if bottom_nav_frame is not None:
+            bottom_nav_frame.destroy()
+
+        bottom_nav_frame = Frame(root)
+        bottom_nav_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
+
+        close_btn = Button(
+            bottom_nav_frame, text="Close app", command=kill_app, bg="red"
+        )
+        create_btn = Button(
+            bottom_nav_frame, text="Create new database", command=create_new_database
+        )
+
+        close_btn.pack(side=RIGHT, padx=5)
+        create_btn.pack(side=RIGHT, padx=5)
+
+        close_btn.bind("<Return>", kill_app)
+        create_btn.bind("<Return>", create_new_database)
+        if root is not None:
+            for widget in root.winfo_children():
+                widget.destroy()
 
     root.title("CampMaster - Main Menu")
 
     camps = get_available_camps()
     camp_list_on_main_page(camp_list=camps)
 
-    bottom_navigation_bar()
+    bottom_bar()
 
 
 ############
