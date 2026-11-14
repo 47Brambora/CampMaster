@@ -3,7 +3,7 @@ import sys
 
 from campmaster.main import DATA_DIR, current_year, init_database
 
-reply = input("Please input name of database")
+reply = input("Please input name of database: ")
 
 if not reply:
     reply = f"T_camp_{current_year()}"
