@@ -141,11 +141,10 @@ DATA_DICTATORY = {
 }
 
 import datetime
-import os
 import random
 import sqlite3
 
-from campmaster.main import current_year, DATA_DIR
+from campmaster.main import current_year
 
 
 def gen_random_participants(count: int = 20) -> list[dict]:
