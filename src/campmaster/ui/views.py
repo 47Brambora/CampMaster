@@ -329,38 +329,8 @@ def main_menu(root):
     close_btn.pack(side=RIGHT, padx=5)
     create_btn.pack(side=RIGHT, padx=5)
 
+    def create_on_enter(event):
+        create_new_database(root)
+
     close_btn.bind("<Return>", partial(kill_app, root))
-    create_btn.bind("<Return>", partial(create_new_database, root))
-
-
-#    def bottom_bar():
-#        global bottom_nav_frame
-#
-#        if bottom_nav_frame is not None:
-#            bottom_nav_frame.destroy()
-#
-#        bottom_nav_frame = Frame(root)
-#        bottom_nav_frame.pack(side=BOTTOM, anchor=SE, padx=20, pady=20)
-#
-#        close_btn = Button(
-#            bottom_nav_frame, text="Close app", command=kill_app, bg="red"
-#        )
-#        create_btn = Button(
-#            bottom_nav_frame, text="Create new database", command=create_new_database
-#        )
-#
-#        close_btn.pack(side=RIGHT, padx=5)
-#        create_btn.pack(side=RIGHT, padx=5)
-#
-#        close_btn.bind("<Return>", kill_app)
-#        create_btn.bind("<Return>", create_new_database)
-#        if root is not None:
-#            for widget in root.winfo_children():
-#                widget.destroy()
-#
-#    root.title("CampMaster - Main Menu")
-#
-#    camps = get_available_camps()
-#    camp_list_on_main_page(camp_list=camps)
-#
-#    bottom_bar()
+    create_btn.bind("<Return>", create_on_enter)
