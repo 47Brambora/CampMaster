@@ -3,7 +3,9 @@ import os
 import sqlite3
 from functools import partial
 from tkinter import *
-from tkinter import messagebox, simpledialog, ttk
+from tkinter import simpledialog, ttk
+
+from .ui.dialogs import *
 
 ##############
 #   CONFIG   #
@@ -137,31 +139,10 @@ def init_database(db_path: str):
 ##########
 
 
-def mesbox_askyesno(tit: str, msg: str, ico: str = "question", defa: bool = False):
-    if defa:
-        defa = messagebox.YES
-    else:
-        defa = messagebox.NO
-
-    return messagebox.askyesno(title=tit, message=msg, icon=ico, default=defa)
-
-
 def cli_askyesno(tit: str, msg: str):
     print(f"{tit}\n{msg}")
     qYn = input("answer by typing [Y/n]: ")
     return qYn.strip().lower() != "n"
-
-
-def mesbox_showwarning(msg: str, tit: str = "[Warning]"):
-    return messagebox.showwarning(title=tit, message=mes)
-
-
-def mesbox_showerror(msg: str, tit: str = "[Error]"):
-    return messagebox.showerror(title=tit, message=msg)
-
-
-def mesbox_showinfo(msg: str, tit: str = "[INFO]"):
-    return messagebox.showinfo(title=tit, message=msg)
 
 
 # Pop up asking if you want to close the app for SURE!!!
