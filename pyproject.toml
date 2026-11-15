@@ -5,17 +5,15 @@ description = "An official offline desktop application designed for managing poi
 readme = "README.md"
 license = "GPL-3.0-or-later"
 license-files = ["LICENSE"]
-authors = [
-    { name = "47Brambora", email = "47Brambora@gmail.com" }
-]
+authors = [{ name = "47Brambora", email = "47Brambora@gmail.com" }]
 requires-python = ">=3.14"
-dependencies = [
-    "openpyxl>=3.1.5",
-    "pyinstaller>=6.22.3",
-]
+dependencies = ["openpyxl>=3.1.5"]
 
 [project.scripts]
 campmaster = "campmaster:main"
+
+[dependency-groups]
+dev = ["pyinstaller>=6.22.3", "pytest>=9.2.0", "ruff>=0.17.5"]
 
 [build-system]
 requires = ["uv_build>=0.13.6,<0.14.0"]
