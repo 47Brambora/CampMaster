@@ -7,7 +7,7 @@
 # 6. age_group
 # 7. gender
 
-DATA_DICTATORY = {
+DATA_DICTIONARY = {
     "FIRST_NAMES_MALE": [
         "Jan",
         "Tomáš",
@@ -140,81 +140,99 @@ DATA_DICTATORY = {
     ],
 }
 
+AGE_GROUPS = [(16, "A"), (13, "B"), (11, "C"), (9, "D"), (7, "E"), (0, "F")]
+
+GENDERS = ("M", "F")
+AGE_RANGE = (5, 18)
+DEFAULT_COUNT = 42
+
 import datetime
+import os
 import random
 import sqlite3
 
-from campmaster.main import current_year
+from campmaster.config import DATA_DIR
+from campmaster.utils import current_year, get_available_camps
 
 
-def gen_random_participants(count: int = 20) -> list[dict]:
-    participants_list = []
+def age_group_for(age: int) -> str:
+    for min_age, group in AGE_GROUPS:
+        if age >= min_age:
+            return group
+    return AGE_GROUPS[-1][1]
 
+
+def gen_random_participants(
+    count: int = DEFAULT_COUNT, seed: int | None = None
+) -> list[dict]:
+    rng = random.Random(seed)
     base_year = current_year()
+    participants = []
 
     for i in range(count):
-        gender = random.choice(["M", "F"])
-        if gender == "M":
-            first_name = random.choice(DATA_DICTATORY["FIRST_NAMES_MALE"])
-        else:
-            first_name = random.choice(DATA_DICTATORY["FIRST_NAMES_FEMALE"])
-        last_name = random.choice(DATA_DICTATORY["LAST_NAMES"])
+        gender = rng.choice(GENDERS)
+        names = DATA_DICTIONARY[
+            "FIRST_NAMES_MALE" if gender == "M" else "FIRST_NAMES_FEMALE"
+        ]
 
-        age = random.randint(5, 18)
-        birth_year = base_year - age
-        birth_month = random.randint(1, 12)
-        birth_day = random.randint(1, 28)
-        date_of_birth = datetime.date(birth_year, birth_month, birth_day).strftime(
-            "%Y-%m-%d"
+        age = rng.randint(*AGE_RANGE)
+        date_of_birth = datetime.date(
+            base_year - age, rng.randint(1, 12), rng.randint(1, 28)
+        ).isoformat()
+
+        participants.append(
+            {
+                "first_name": rng.choice(names),
+                "last_name": rng.choice(DATA_DICTIONARY["LAST_NAMES"]),
+                "date_of_birth": date_of_birth,
+                "team": DATA_DICTIONARY["TEAMS"][i % len(DATA_DICTIONARY["TEAMS"])],
+                "age_group": age_group_for(age),
+                "gender": gender,
+            }
         )
 
-        if age >= 16:
-            age_group = "A"
-        elif age >= 13:
-            age_group = "B"
-        elif age >= 11:
-            age_group = "C"
-        elif age >= 9:
-            age_group = "D"
-        elif age >= 7:
-            age_group = "E"
-        else:
-            age_group = "F"
-
-        team = random.choice(DATA_DICTATORY["TEAMS"])
-
-        participant_data = {
-            "participant_id": i + 1,
-            "first_name": first_name,
-            "last_name": last_name,
-            "date_of_birth": date_of_birth,
-            "team": team,
-            "age_group": age_group,
-            "gender": gender,
-        }
-        participants_list.append(participant_data)
-
-    return participants_list
+    rng.shuffle(participants)
+    return participants
 
 
-def save_parcipants_to_db(participants_list: list[dict], db_path: str):
+def save_participants_to_db(participants: list[dict], db_path: str) -> None:
+    db_path = db_path.strip()
+    if not db_path:
+        db_path = os.path.join(DATA_DIR, f"camp_{current_year()}.db")
+    if not db_path.endswith(".db"):
+        db_path += ".db"
+
+    sql = """
+        INSERT INTO participants (first_name, last_name, date_of_birth, team, age_group, gender)
+        VALUES (:first_name, :last_name, :date_of_birth, :team, :age_group, :gender)
+    """
     with sqlite3.connect(db_path) as conn:
-        cursor = conn.cursor()
+        conn.executemany(sql, participants)
 
-        sql = """
-            INSERT INTO participants (first_name, last_name, date_of_birth, team, age_group, gender)
-            VALUES (:first_name, :last_name, :date_of_birth, :team, :age_group, :gender)
-        """
-
-        # Opraveno: volání bez klíčových slov (sql a seq_of_parameters)
-        cursor.executemany(sql, participants_list)
-        conn.commit()
-
-    print(f"Úspěšně uloženo {len(participants_list)} účastníků do databáze {db_path}!")
+    print(f"Uloženo {len(participants)} účastníků do {db_path}.")
 
 
-def main():
-    save_parcipants_to_db(gen_random_participants(), "data/camp_2026.db")
+def ask_positive_int(prompt: str, default: int) -> int:
+    while True:
+        raw = input(prompt).strip()
+        if not raw:
+            return default
+        if raw.isdigit() and int(raw) > 0:
+            return int(raw)
+        print("Zadejte kladné celé číslo.")
+
+
+def main() -> None:
+    count = ask_positive_int(
+        "Kolik účastníků chcete vygenerovat? [42]: ", DEFAULT_COUNT
+    )
+
+    print("Dostupné tábory:")
+    for camp in get_available_camps(data_dir_path=DATA_DIR):
+        print(f"  - {camp}")
+
+    db_path = input("Do které databáze to vložit? (prázdné = camp_ROK.db): ")
+    save_participants_to_db(gen_random_participants(count=count), db_path=db_path)
 
 
 if __name__ == "__main__":
