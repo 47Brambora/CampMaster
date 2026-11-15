@@ -47,3 +47,9 @@ uv run campmaster
 - **Database:** Local structured database (SQLite) for application data and records
 - **Reporting / Export:** Excel generation with custom styling and colors (`openpyxl`; pandas is planned for later statistics)
 - **Distribution:** Standalone `.exe` package via PyInstaller (zero-dependency local execution)
+
+## License
+
+CampMaster is free software released under the GNU General Public License version 3 (or any later version). See [LICENSE](LICENSE) for the full text.
+
+If you use CampMaster or build on it, please credit the project and link to this repository.

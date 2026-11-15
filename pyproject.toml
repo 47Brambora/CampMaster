@@ -3,6 +3,8 @@ name = "campmaster"
 version = "0.1.0"
 description = "An official offline desktop application designed for managing points, disciplines, time measurements, and camp administration at children's summer camps, training camps, and sports events."
 readme = "README.md"
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 authors = [
     { name = "47Brambora", email = "47Brambora@gmail.com" }
 ]
