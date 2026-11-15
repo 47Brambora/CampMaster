@@ -1,6 +1,8 @@
 {
   "recommendations": [
     "charliermarsh.ruff",
-    "ms-python.python"
+    "ms-python.python",
+    "vivaxy.vscode-conventional-commits",
+    "davidanson.vscode-markdownlint"
   ]
 }
