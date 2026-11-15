@@ -4,4 +4,15 @@
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff"
   },
+  "conventionalCommits.scopes": [
+    "tools",
+    "docs",
+    "data",
+    "todo",
+    "db",
+    "ui",
+    "deps",
+    "config",
+    "cli"
+  ]
 }
