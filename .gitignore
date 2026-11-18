@@ -23,6 +23,7 @@ dist/
 # User data & exports
 /data/*
 !/data/*.template.*
+!/data/format
 
 # Editors & IDEs
 .vscode/

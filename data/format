@@ -1,0 +1,31 @@
+games:
+    game_id  (100+)           [INTEGER]               => Unique identifier starting from 100
+    game_type                 [TEXT]                  => Type of that specific game/discipline:
+    - 'points'  => Evaluated purely by scored points (e.g., target shooting, quiz,...)
+    - 'time'    => Evaluated by measured time / stopwatch (e.g., running, obstacle course,...)
+    game_name                 [TEXT]                  => name of the game
+    scoring_rule              [TEXT]                  => Strategy for calculating points / standings:
+    - fixed_max_XX                      => Fixed maximum points limit (e.g., max 10 or 20 points regardless of participants)
+    - child_in_group_count_max_points   => Max points equal to the total count of children participating in the group/category
+    - descending_by_participants        => Points awarded descending by rank (1st place gets max participants points, last gets 1)
+    - ascending_by_participants         => Points awarded ascending by rank (inverse scoring or penalty-based ranking)
+    start_interval_seconds    [INTEGER]   {default 0} => Time gap between individual starts in seconds (default 0 for simultaneous or non-time games)
+
+participants:
+    participant_id  [INTEGER]
+    first_name      [TEXT]
+    last_name       [TEXT]
+    date_of_birth   [TEXT/DATETIME]
+    team            [TEXT]
+    age_group       [TEXT] => Category classification (e.g., categories A through F)
+    gender          [TEXT]
+
+scores:
+    score_id                  [INTEGER]
+    participant_id            [INTEGER]
+    game_id                   [INTEGER]
+    status                    [TEXT]      => Current state of participation (e.g., 'OK', 'DNS' - did not start, 'DNF' - did not finish, 'DQ' - disqualified)
+    start_time_seconds        [INTEGER]   => NULL for point-based games or when not started
+    finish_time_seconds       [INTEGER]   => NULL for point-based games or when not finished
+    points_scored             [INTEGER]   {default 0}
+    manual_points_override    [INTEGER]   => NULL = no override (0 is a valid override)
