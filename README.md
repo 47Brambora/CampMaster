@@ -6,6 +6,9 @@ The application is built entirely in **Python** and runs locally as a standalone
 
 ## Key Features
 
+> [!NOTE]
+> **Development Status:** Data is currently saved to local **JSON** files instead of an SQLite database to allow for faster iteration and development. Full database integration will follow once the core structure stabilizes.
+
 - **Local Database & Secure Storage:**
   - Structured local storage (SQLite-based) for participants, categories, points, and sensitive data (such as health records and contracts).
   - Designed with data privacy and offline reliability in mind.
